@@ -1,5 +1,5 @@
 /* 禁止文本选择的关键代码 */
-.no-select {
+* {
     -webkit-user-select: none; /* Safari浏览器 */
     -moz-user-select: none;    /* Firefox浏览器 */
     -ms-user-select: none;     /* IE/Edge浏览器 */
