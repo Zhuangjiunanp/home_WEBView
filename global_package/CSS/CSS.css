@@ -1,1 +1,14 @@
-{}
+/* 禁止文本选择的关键代码 */
+.no-select {
+    -webkit-user-select: none; /* Safari浏览器 */
+    -moz-user-select: none;    /* Firefox浏览器 */
+    -ms-user-select: none;     /* IE/Edge浏览器 */
+    user-select: none;         /* 标准语法 */
+}
+
+/* 确保移动设备点击正常 */
+.no-select a, .no-select button {
+    -webkit-touch-callout: default; /* 允许链接的触摸反馈 */
+    touch-action: manipulation;     /* 优化触摸响应速度 */
+}
+
