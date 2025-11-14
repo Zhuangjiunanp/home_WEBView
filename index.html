@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 页面不存在</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #3498db, #e74c3c);
+        }
+        
+        .error-code {
+            font-size: 100px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .error-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .error-message {
+            margin-bottom: 30px;
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        .info-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .info-box strong {
+            color: #2c3e50;
+        }
+        
+        .ip-address, .request-id {
+            font-family: 'Courier New', monospace;
+            background-color: #eef2f7;
+            padding: 3px 6px;
+            border-radius: 3px;
+            color: #2c3e50;
+        }
+        
+        .back-home {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-top: 20px;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+        }
+        
+        .back-home:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4);
+        }
+        
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #95a5a6;
+            border-top: 1px solid #ecf0f1;
+            padding-top: 20px;
+            width: 100%;
+        }
+        
+        .request-info {
+            font-family: 'Courier New', monospace;
+            background-color: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+            color: #7f8c8d;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+            
+            .error-code {
+                font-size: 80px;
+            }
+            
+            .error-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-code">404</div>
+        <h1 class="error-title">页面不存在</h1>
+        <p class="error-message">抱歉，您访问的页面不存在或已被移除。</p>
+        
+        <div class="info-box">
+            <strong>访问者IP:</strong> <span class="ip-address" id="ip-address">正在获取...</span>
+        </div>
+        
+        <p>请检查您输入的URL是否正确，或返回首页继续浏览。</p>
+        
+        <a href="/" class="back-home">返回首页</a>
+    </div>
+    
+    <div class="footer">
+        <p>Powered by Tengine</p>
+        <div class="request-info">CDN Request Id: 未知</div>
+    </div>
+
+    <script>
+        // 获取用户IP地址并更新页面显示
+        fetch('https://api64.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ip-address').textContent = data.ip;
+        
+                // 生成动态CDN Request Id
+                const timestamp = Date.now().toString(36);
+                const randomStr = Math.random().toString(36).substring(2, 10);
+                const requestId = `${timestamp}${randomStr}`;
+        
+                // 更新CDN Request Id显示
+                document.querySelector('.request-info').textContent = `CDN Request Id: ${requestId}`;
+            })
+            .catch(error => {
+                document.getElementById('ip-address').textContent = '无法获取IP地址';
+                console.error('获取IP地址失败:', error);
+        
+                // 即使IP获取失败也生成Request Id
+                const timestamp = Date.now().toString(36);
+                const randomStr = Math.random().toString(36).substring(2, 10);
+                const requestId = `${timestamp}${randomStr}`;
+        
+                document.querySelector('.request-info').textContent = `CDN Request Id: ${requestId}`;
+            });
+    </script>
+</body>
+</html>
